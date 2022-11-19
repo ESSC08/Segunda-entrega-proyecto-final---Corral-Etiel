@@ -28,7 +28,7 @@ const ItemListContainer = (obj) => {
       <button onClick={cambiarEstado}>cambiar estado</button>
 
       { products.map(obj => 
-          <div key={obj.id} className="w-50">
+          <div key={obj.id} className="w-10 card border-success mb-3" >
             <div className="card-header">
               {obj.name}
             </div>
@@ -36,12 +36,11 @@ const ItemListContainer = (obj) => {
               {obj.stock}
             </div>
             <div className="card-body">
-              <img src={obj.foto} className="w-50"/>
+              <img src={obj.foto} className="w-10 center"/>
             </div>
             <div className="card-footer">
               Precio: {obj.precio}
             </div>
-            
           </div>)}
     </div>
   )

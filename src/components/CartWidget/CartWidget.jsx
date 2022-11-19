@@ -1,10 +1,10 @@
-// import { Button } from 'bootstrap'
-import React from 'react'
+import { FaAtom } from 'react-icons/fa';
+
 
 const CartWidget = () => {
   return (
     <div>
-      <p>Carrito de compras</p>
+      <FaAtom></FaAtom>
     </div>
   )
 }
