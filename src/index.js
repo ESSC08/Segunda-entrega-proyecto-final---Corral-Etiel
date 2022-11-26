@@ -2,8 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 // import './index.css';
 import App from './App';
+import { initFirestore } from './firebase/config';
 import reportWebVitals from './reportWebVitals';
 
+initFirestore()
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

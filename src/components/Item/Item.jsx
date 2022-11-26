@@ -17,7 +17,7 @@ const Item = memo( ({ product }) => {
             <div className='card-footer'>
                 categoria: {product.categoria}
                 <hr />
-                precio : {product.price}
+                precio : {product.precio}
             </div>
         </Link>
     </div> 

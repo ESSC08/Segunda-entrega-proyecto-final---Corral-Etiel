@@ -22,7 +22,7 @@ const ItemDetail = ({ product }) => {
         <div className="col">
           <img src={product.foto} className="w-25" />
           <p>Categoría: {product.categoria}</p>
-          <p>Precio: {product.price}</p>
+          <p>Precio: {product.precio}</p>
           <p>stock: {product.stock}</p>
         </div>
         

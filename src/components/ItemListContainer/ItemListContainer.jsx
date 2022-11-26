@@ -1,54 +1,54 @@
-import "./ItemListContainer.css"
-import React from 'react'
 import { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { gFetch } from '../../utils/gFetch'
+import ItemList from '../ItemList'
 
-import { Link } from "react-router-dom";
+import { getFirestore, doc, getDoc, collection, getDocs, query, where, limit, orderBy } from 'firebase/firestore'
 
+const ItemListContainer = (obj) => {  
+    const [products, setProducts] = useState([])
+    
+    const [product, setProduct] = useState({})
 
-const ItemListContainer = (obj) => {
+    const [loading, setLoading] = useState(true)
+    const {categoriaId} = useParams()
+    const [ bool, setBool] = useState(false)
 
-  const [products, setProducts] = useState([])
-  const [bool, setBool] = useState(true)
-  
+    useEffect(() => {
 
-  useEffect(() => {
-    gFetch
-    .then(resp => setProducts(resp))
-    .catch(err => console.log(err))
-    .finally(() => console.log("siempre"))},
-   [])
+        const dbFirestore = getFirestore()
+        const queryCollection = collection(dbFirestore, 'Productos')
 
-  const cambiarEstado = () => {
-    setBool(!bool)
-  }
+        let queryFilter = query(queryCollection, where('price', '>=', 1200), limit(2), orderBy('price', 'asc') )  
 
-  console.log(products)
-  return (
-    <div> 
-      <h1> ItemListContainer </h1>
-      <h2>Contenido de lista</h2>
-      <button onClick={cambiarEstado}>cambiar estado</button>
+        getDocs(queryFilter)
+        .then((resp) => setProducts( resp.docs.map(doc => ( { id: doc.id, ...doc.data() } ) ) ))
+        .catch(err => console.log(err))
+        .finally(()=>setLoading(false)) 
+        .then((doc) => setProduct(   { id: doc.id, ...doc.data() }  ))
+    },[])
 
-      { products.map(obj => 
-          <div key={obj.id} className="w-50 card border-success mb-3" >
-            <Link to={ "/detail/${obj.id}" }>
-              <div className="card-header">
-                {obj.name}
-              </div>
-              <div className="card-body">
-                {obj.stock}
-              </div>
-              <div className="card-body">
-                <img src={obj.foto} className="w-10 center"/>
-              </div>
-              <div className="card-footer">
-                Precio: {obj.precio}
-              </div>
-            </Link>
-          </div>)}
-    </div>
-  )
+    const agregarProducto = () => {
+        setProducts([...products, {id: products.length, name: `Producto ${products.length}`}])
+    }
+
+    const cambiarEstado = () => {
+        setBool(!bool)
+    }
+
+    console.log(products)
+    return (
+        loading 
+            ? 
+                <h2>CArgando...</h2>            
+            :
+                <div>
+                    <h1>ItemListContainer</h1>
+                    <ItemList products={products} />
+                    <button onClick={cambiarEstado}>Me gusta</button>
+                    <button onClick={agregarProducto}>Agregar Productos</button>
+                </div>
+    )
 }
 
 export default ItemListContainer
